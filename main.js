@@ -255,17 +255,6 @@ let vendors =transactions.filter(function(transaction) { //go through the transa
 
 
 console.log( 'The unique vendors are:', vendors );
-	//
-	// {
-	// 	type: 'purchase',
-	// 	paymentMethod: 'credit',
-	// 	vendor: 'Dick\'s Doodads',
-	// 	items: [
-	// 		{ name: 'XL Doodad', price: -3.00 },
-	// 		{ name: 'XS Doodad', price: -0.50 }
-	// 	]
-	// },
-
 // --------------------------------------------------
 // QUESTION 06
 // --------------------------------------------------
@@ -276,9 +265,13 @@ console.log( 'The unique vendors are:', vendors );
 	HINT(S):
 	- Not all transactions have a 'customer'!
 	- The assembled array should be made up of strings, not full `transaction` objects.
-	- Make sure that the resulting array *does not* include any duplicates.
+	- Make sure that the resulting array *does not* include any duplicates. **************REVISIT************
 */
-var uniqueCustomers;
+let uniqueCustomers = transactions.filter(function(transaction) {
+	return (transaction.customer)
+}).map(function(transaction){ //takes an array and changes it and gives you a new array
+return transaction.customer
+});
 
 console.log( 'The unique customers are:', uniqueCustomers );
 
@@ -296,8 +289,18 @@ console.log( 'The unique customers are:', uniqueCustomers );
 	- There may be more than 1 'sale' that includes 5 or more items.
 	- Individual transactions do not have either `name` or `numItems` properties, we'll have to add them to the output.
 */
-var bigSpenders;
+var bigSpenders = transactions.filter(function(transaction){
+	return (transaction.type === 'sale' && transaction.items.length >= 5) //give me transactions with sales greater than 5
+}).map(function(transaction){
+let	shorttransaction = {}
+shorttransaction.name = transaction.customer
+shorttransaction.numItems = transaction.items.length
+return shorttransaction
+});
 
+//name === {customer.}
+//let name = customer
+//let numItems =Items.length
 console.log( 'The "big spenders" are:', bigSpenders );
 
 
