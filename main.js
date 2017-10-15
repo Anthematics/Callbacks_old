@@ -313,9 +313,18 @@ console.log( 'The "big spenders" are:', bigSpenders );
 	HINT(S):
 	- Transactions don't have 'prices', but their 'items' do!
 */
-var sumSales;
 
-console.log( 'The sum of all sales is:', sumSales );
+let sumSales = transactions.filter(function(transaction){
+	return transaction.type === 'sale'; //return all sales made
+}).reduce(function(transaction){ //reduce the returned sales
+	return transactions[0].items //and return only the transactions for the first sale
+}).map(function(transaction){ //use.map so we tell the array to seperate individual elements
+		return transaction.price //out of those elements give me the price
+}).reduce(function(sum,value){  //reduce the returned transaction(the first one to just its values)
+	return sum+value; //give me the sum.
+})
+
+console.log( 'The sum of the first sale is:', sumSales );
 
 
 // --------------------------------------------------
@@ -329,9 +338,15 @@ console.log( 'The sum of all sales is:', sumSales );
 	- Make sure to include 'price' information from *all* purchases.
 */
 
-var sumPurchases;
+let sumPurchases = transactions.filter(function(transaction){
+	return transaction.type === 'purchase'; //return all purchases
+}).reduce(function(transaction){ //reduce the returned purchases
+	return transactions.items //return all purchases since we will sum all of them
+}).map(function(transaction){
+	return transaction.price 
+});
 
-console.log( 'The sum of all purhcases is:', sumPurchases );
+console.log( 'The sum of all purchases is:', sumPurchases );
 
 
 // --------------------------------------------------
