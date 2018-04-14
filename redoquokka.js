@@ -1,4 +1,6 @@
-let transactions = [
+/* eslint-disable no-console */
+
+const transactions = [
   {
     type: 'sale',
     paymentMethod: 'cash',
@@ -132,11 +134,6 @@ console.log('The total number of transactions is:', totalTransactions);
 	HINT(S):
 	- Not all transactions are 'sales'.
 */
-const numSales = transactions.filter((transaction) => {
- return (transaction.type === 'sale')
-}).length;
-
-console.log('The total number of sales is:', numSales);
 
 
 // each pair of qs has 2 ways to do it
@@ -158,60 +155,27 @@ console.log('The total number of sales is:', numSales);
 	P.S.
 	The breakdown above takes up a lot of space, feel free to move it to the top or bottom of the file!
 */
-
-
-// var transactions = [
-// // 	{
-// // 		type: 'sale',
-// // 		paymentMethod: 'cash',
-// // 		customer: 'Isaac Asimov',
-// // 		items: [
-// // 			{ name: 'Byte', price: 1.00 },
-// // 			{ name: 'Bit', price: 0.125 }
-// // 		]
-// // 	//
 // // --------------------------------------------------
 // QUESTION 02
 // --------------------------------------------------
 /*
 	Calculate the total number of 'purchases'.
 */
-const numPurchases = transactions.filter((transaction) => {
-	return (transaction.type ==='purchase')
-}).length;
 
-console.log('The total number of purchases is:', numPurchases);
+const totalPurchases = transactions.filter(transaction => transaction.type === 'purchase').length;
 
+console.log(`the purchases total up to + ${totalPurchases}`);
 
 // --------------------------------------------------
 // QUESTION 03
 // --------------------------------------------------
 /*
-	Calculate the total number of 'cash' 'sales'.
+ Calculate the total number of 'cash' 'sales'. */
 
-	return transaction type === 'Sale' && paymentMethod === 'cash'
-
-	HINT(S):
-	- Don't forget that 'purchases' can also be made in 'cash'!
-*/
-// var numCashSales =transactions.filter(function(transaction) {
-// return (transaction.type === 'sale' && transaction.paymentMethod === 'cash')
-// }).length;
-
-// less efficent but drives the point home
-const numCashSales = transactions.filter((transaction) => {
-return (transaction.type === 'sale')
-}).filter((transaction) => {
-	return(transaction.paymentMethod==='cash')
-}).length;
+const cashSales = transactions.filter(transaction => transaction.type === 'sale' && transaction.paymentMethod === 'cash').length;
 
 
-// read the q
-// what type of data should i end with ?
-// what additional info do i need to revisit before starting (check the top)
-
-
-console.log('The total number of cash sales is:', numCashSales);
+console.log(`The total number of cash sales is: + ${cashSales}`);
 
 
 // --------------------------------------------------
@@ -223,9 +187,8 @@ console.log('The total number of cash sales is:', numCashSales);
 	HINT(S):
 	- Make sure to exclude any 'sales' made by 'credit'!
 */
-const numCreditPurchases = transactions.filter((transaction) => {
-	return (transaction.type === 'purchase' && transaction.paymentMethod === 'credit')
-}).length;
+
+const numCreditPurchases = transactions.filter(transaction => transaction.type === 'sale' && transaction.paymentMethod === 'credit').length;
 
 console.log('The total number of credit purchases is:', numCreditPurchases);
 
@@ -243,14 +206,12 @@ console.log('The total number of credit purchases is:', numCreditPurchases);
 	- The assembled array should be made up of strings, not full `transaction` objects.
 	- This array is allowed to contain duplicate values.
 */
-const vendors = transactions.filter((transaction) => { //go through the transactions
-	return (transaction.type === 'purchase') // 1. give me transactions 2. that are purchases
-}).map((transaction) => { // grab the individual elements of transactions that are purchases
-		return(transaction.vendor)  // and only give me the vendor name out of those.
-});
-
+const vendors = [];
+const uniqueVendors = transactions.filter(transaction => transaction.type === 'purchase').map(transaction => transaction.vendor);
+vendors.push(uniqueVendors);
 
 console.log('The unique vendors are:', vendors);
+
 // --------------------------------------------------
 // QUESTION 06
 // --------------------------------------------------
@@ -263,11 +224,8 @@ console.log('The unique vendors are:', vendors);
 	- The assembled array should be made up of strings, not full `transaction` objects.
 	- Make sure that the resulting array *does not* include any duplicates. **************REVISIT************
 */
-const uniqueCustomers = transactions.filter((transaction) => {
-	return (transaction.customer)
-}).map((transaction) => { //takes an array and changes it and gives you a new array
-return transaction.customer
-});
+
+const uniqueCustomers = transactions.filter(transaction => transaction.type === 'sale').map(transaction => transaction.customer);
 
 console.log('The unique customers are:', uniqueCustomers);
 
@@ -285,20 +243,24 @@ console.log('The unique customers are:', uniqueCustomers);
 	- There may be more than 1 'sale' that includes 5 or more items.
 	- Individual transactions do not have either `name` or `numItems` properties, we'll have to add them to the output.
 */
-let bigSpenders = transactions.filter((transaction) => {
-	return (transaction.type === 'sale' && transaction.items.length >= 5) //give me transactions with sales greater than 5
-}).map((transaction) => {
-let	shorttransaction = {}
-shorttransaction.name = transaction.customer;
-shorttransaction.numItems = transaction.items.length;
-return shorttransaction;
+
+const bigSpenders = transactions.filter(transaction => transaction.type === 'sale' && transaction.items.length >= 5)
+  .map((transaction) => {
+  });
+bigSpenders; // ?
+/*
+.filter(transaction => transaction
+  .type === 'sale'
+&& transaction.items.length >= 5)
+.map((transacton) => {
+  const shortTransaction = {};
+  shortTransaction.name = transaction.name;
+  shortTransaction.numItems = transaction.items.length;
+  return shortTransaction;
 });
 
-// name === {customer.}
-// let name = customer
-// let numItems =Items.length
 console.log('The "big spenders" are:', bigSpenders);
-
+*/
 
 // --------------------------------------------------
 // QUESTION 08
@@ -310,15 +272,6 @@ console.log('The "big spenders" are:', bigSpenders);
 	- Transactions don't have 'prices', but their 'items' do!
 */
 
-const sumSales = transactions.filter((transaction) => {
-	return transaction.type === 'sale'; //return all sales made
-}).reduce((transaction) => { //reduce the returned sales
-	return transactions[0].items //and return only the transactions for the first sale
-}).map((transaction) => { //use.map so we tell the array to seperate individual elements
-		return transaction.price //out of those elements give me the price
-}).reduce((sum,value) => {  //reduce the returned transaction(the first one to just its values)
-	return sum+value; //give me the sum.
-});
 
 console.log('The sum of the first sale is:', sumSales);
 
@@ -334,13 +287,6 @@ console.log('The sum of the first sale is:', sumSales);
 	- Make sure to include 'price' information from *all* purchases.
 */
 
-const sumPurchases = transactions.filter((transaction) => {
-	return transaction.type === 'purchase'; //return all purchases
-}).reduce((transaction) => { //reduce the returned purchases
-	return transactions.items //return all purchases since we will sum all of them
-}).map((transaction) => {
-	return transaction.price
-});
 
 console.log('The sum of all purchases is:', sumPurchases);
 
