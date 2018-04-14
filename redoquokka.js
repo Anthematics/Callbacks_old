@@ -216,7 +216,7 @@ console.log('The unique vendors are:', vendors);
 // QUESTION 06
 // --------------------------------------------------
 /*
-	Create an array that includes all of *unique* customers which appear in the transactions data set.
+	Create an array that includes all of *unique* customers.map((transaction) => { which appear in the transactions data set.
 	eg. `[ 'customer one', 'customer two', ... ]
 
 	HINT(S):
@@ -244,36 +244,31 @@ console.log('The unique customers are:', uniqueCustomers);
 	- Individual transactions do not have either `name` or `numItems` properties, we'll have to add them to the output.
 */
 
+
 const bigSpenders = transactions.filter(transaction => transaction.type === 'sale' && transaction.items.length >= 5)
   .map((transaction) => {
+    const shortTransaction = {};
+    shortTransaction.name = transaction.customer;
+    shortTransaction.numItems = transaction.items.length;
+    return shortTransaction;
   });
-bigSpenders; // ?
-/*
-.filter(transaction => transaction
-  .type === 'sale'
-&& transaction.items.length >= 5)
-.map((transacton) => {
-  const shortTransaction = {};
-  shortTransaction.name = transaction.name;
-  shortTransaction.numItems = transaction.items.length;
-  return shortTransaction;
-});
 
 console.log('The "big spenders" are:', bigSpenders);
-*/
+
 
 // --------------------------------------------------
 // QUESTION 08
 // --------------------------------------------------
 /*
-	Calculate the sum of the *first* 'sale' transaction.
+	Calculate the sum of all sales transactions.
 
 	HINT(S):
 	- Transactions don't have 'prices', but their 'items' do!
 */
+const sumSales = transactions.filter(transaction => transaction.type === 'sale')
+  .reduce();
 
-
-console.log('The sum of the first sale is:', sumSales);
+console.log('The sum of all sales is:', sumSales);
 
 
 // --------------------------------------------------
@@ -287,6 +282,7 @@ console.log('The sum of the first sale is:', sumSales);
 	- Make sure to include 'price' information from *all* purchases.
 */
 
+const sumPurchases = transactions.filter(transaction => transaction.type === 'purchase');
 
 console.log('The sum of all purchases is:', sumPurchases);
 
